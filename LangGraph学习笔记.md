@@ -22,6 +22,8 @@
 
 已补充：[第九课：Command 状态更新与路由](./notes/09_Command状态更新与路由.md)，配套运行文件为 `command_routing_demo.py`。
 
+已补充：[第十课：真实模型与结构化输出](./notes/10_真实模型与结构化输出.md)，配套运行文件为 `structured_output_demo.py`（精简版，直接运行，无需参数），原版保存在 `structured_output_full.py`。精简版于 2026-10-26 完成真实验证。离线校验已通过；在用户指定的 Intern InkStone 平台用 glm-5.3 完成真实模型输出、校验和条件路由，DeepSeek 模型通道返回 HTTP 429。
+
 可选案例：[已有 LangChain 项目的 Agent 循环对照](./notes/02_从你的LangChain项目理解Agent循环.md)，配套运行文件为 `aiops_agent_loop_demo.py`。
 
 本次检查使用命令行默认 Python：3.13.7；已安装 `langgraph==1.2.4`、`langchain-core==1.4.6`，未安装 `langchain` 主包。PyCharm 使用的解释器可能不同。
@@ -175,7 +177,8 @@ return {"status": "analyzing"}
 | 6 | 子图、共享字段与包装节点 | 父子图怎样通过接口交换状态？ |
 | 7 | RetryPolicy、异常传播、失败后继续 | 自动重试与 checkpoint 恢复有何不同？ |
 | 8 | Send、动态任务与结果汇总 | 只有一个 worker 节点，为何能处理任意数量的输入项？ |
-| 9（本节） | Command(update, goto)、不同控制方式对照 | 状态更新与路由怎样一起返回，普通边是否仍会执行？ |
+| 9 | Command(update, goto)、不同控制方式对照 | 状态更新与路由怎样一起返回，普通边是否仍会执行？ |
+| 10（本节） | 真实模型请求、schema 校验与确定性路由 | JSON 合法、schema 合格、语义正确分别由谁检查？glm-5.3 真实请求与路由验证通过，DeepSeek 模型通道返回 HTTP 429。 |
 
 “已覆盖”表示已有讲解和实验，不代表无需复习或已经熟练。建议能够预测输出，再自己改动一个条件验证。
 
@@ -183,14 +186,13 @@ return {"status": "analyzing"}
 
 | 建议课程 | 学什么 | 要解决的问题与实验 |
 | --- | --- | --- |
-| 10 | 真实模型接入、工具绑定与结构化输出 | 将模拟决策替换为真实模型；用 schema 约束输出，观察错误与停止条件 |
 | 11 | 流式输出与执行调试 | 区分 updates、values、模型消息与自定义进度；观察完整图和子图的执行事件 |
 | 12 | Runtime context、配置与状态接口 | 哪些数据属于业务 State，哪些是每次运行的依赖、用户上下文或配置？ |
 | 13 | 持久化后端、长期记忆 Store | 退出进程后继续执行；区分 thread 内状态与跨 thread 的用户信息 |
 | 14 | 检查点历史、回放与分叉 | 选一个历史 checkpoint 修改输入或状态，再比较后续路径 |
 | 15 | 综合练习与质量验证 | 将分支、工具、人工反馈、重试、存储和流式输出组合起来，验证正确与失败路径 |
 
-第 10 课接真实模型前，再选择可用模型服务并配置所需凭证。学习重点仍是图怎样处理模型输出，不扩展为完整的 LangChain 专题。
+第 10 课精简版只读取 key.env，直接运行即可；完整版另支持环境变量和隐藏输入。离线验证通过，已在用户提供的兼容平台用 glm-5.3 完成真实验证。DeepSeek 模型通道返回 HTTP 429，但同一平台和密钥下 GLM 请求成功，因此需区分具体模型的可用情况。真实模型的工具调用后续可继续结合第四课的消息循环实验。学习重点仍是图怎样处理模型输出，不扩展为完整的 LangChain 专题。
 
 流式输出和回放分别对应官方的 [Streaming](https://docs.langchain.com/oss/python/langgraph/streaming) 与 [Use time-travel](https://docs.langchain.com/oss/python/langgraph/use-time-travel) 能力；具体示例以本机版本可运行的 API 为准。
 
